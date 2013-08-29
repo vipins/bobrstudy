@@ -1,0 +1,26 @@
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script>
+
+var statement = {{statement|safe}};
+var feedback = {{feedback|safe}};
+i=0
+$(document).bind('keypress', function(e) {
+	 var timer, value;
+	if(e.keyCode == 99 ) {
+		$("#feed").text(feedback[i]);
+		i=i+1;
+		}
+	if(e.keyCode == 32) {
+		$("#state").text(statement[i]);
+		$("#feed").text("");
+	}
+});
+  
+</script>
+<form action="" method="post">
+{% csrf_token %}
+<p id="state"> Ola </p>
+<p id="feed"> Qe Tal </p>
+
+<input type="submit" value="Press this to finish." />
+</form>
