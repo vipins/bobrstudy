@@ -3,24 +3,58 @@
 
 var statement = {{statement|safe}};
 var feedback = {{feedback|safe}};
-i=0
+i=0;
+var presstime = []; //collects timepresses
+var correctnumber = []; //collects correct or incorrect
+var autowait = 3000; //time to wait and show feedback before moving on
+var correct = 99; //make boolean when have norm values
+var incorrect = 120;
+
 $(document).bind('keypress', function(e) {
-	 var timer, value;
-	if(e.keyCode == 99 ) {
-		$("#feed").text(feedback[i]);
-		i=i+1;
-		}
-	if(e.keyCode == 32) {
-		$("#state").text(statement[i]);
-		$("#feed").text("");
+	var timer, value;
+	var start, end;
+	if (i<= statement.length) {
+		if(e.keyCode == correct ) {
+			$("#correctness").text("Correct!");
+			$("#feed").text(feedback[i]);
+			i=i+1;
+			setTimeout(function() {
+			$("#state").text(statement[i]); 
+			$("#feed").text(""); 
+			$("#correctness").text("");}, autowait )
+			presstime.push(new Date().getTime());
+			console.log(presstime);
+			}
+		if(e.keyCode == incorrect ) {
+			$("#correctness").text("Incorrect.");
+			$("#feed").text(feedback[i]);
+			i=i+1;
+			setTimeout(function() {
+			$("#state").text(statement[i]); 
+			$("#feed").text(""); 
+			$("#correctness").text("");}, 3000)
+			} }
+	else {
+		
+$.ajax({
+    url:"/submission/",
+    type: "GET",
+    data: {"time": presstime},
+    success: alert("Thank you"),
+    complete:function(){},
+    error:function (xhr, textStatus, thrownError){
+        alert("error doing something");
+    }
+});
 	}
 });
   
 </script>
 <form action="" method="post">
 {% csrf_token %}
-<p id="state"> Ola </p>
-<p id="feed"> Qe Tal </p>
+<p id="state"> {{first}} </p>
+<p id="correctness"> </p>
+<p id="feed">  </p>
 
-<input type="submit" value="Press this to finish." />
+
 </form>

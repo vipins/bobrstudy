@@ -15,4 +15,5 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
 	url(r'^start/', views.serve),
+	url(r'^submission/', views.process_submission),
 )
