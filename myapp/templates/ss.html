@@ -3,18 +3,20 @@
 
 var statement = {{statement|safe}};
 var feedback = {{feedback|safe}};
+var correct_key = {{corr_key|safe}};
 i=0;
 var presstime = []; //collects timepresses
 var correctnumber = []; //collects correct or incorrect
 var autowait = 3000; //time to wait and show feedback before moving on
-var correct = 99; //make boolean when have norm values
-var incorrect = 120;
+//var correct = 99; //make boolean when have norm values
+//var incorrect = 120;
 
 $(document).bind('keypress', function(e) {
 	var timer, value;
 	var start, end;
+	if (feedback[i].indexOf("uncharacteristic") != -1)  {correct=120; incorrect=99;}
 	if (i<= statement.length) {
-		if(e.keyCode == correct ) {
+		if(e.keyCode == correct_key[i] ) {
 			$("#correctness").text("Correct!");
 			$("#feed").text(feedback[i]);
 			i=i+1;
@@ -25,14 +27,16 @@ $(document).bind('keypress', function(e) {
 			presstime.push(new Date().getTime());
 			console.log(presstime);
 			}
-		if(e.keyCode == incorrect ) {
+		else {
 			$("#correctness").text("Incorrect.");
 			$("#feed").text(feedback[i]);
 			i=i+1;
 			setTimeout(function() {
 			$("#state").text(statement[i]); 
 			$("#feed").text(""); 
-			$("#correctness").text("");}, 3000)
+			$("#correctness").text("");}, autowait )
+			presstime.push(new Date().getTime());
+			console.log(presstime);
 			} }
 	else {
 		
